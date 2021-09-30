@@ -358,7 +358,9 @@ RSpec.describe Api::V1::DnsRecordsController, type: :controller do
     end
     context 'with valid params and hostnames' do
       subject { post :create, params: { dns_records: dns_attributes } }
-      let(:dns_attributes) { attributes_for(:dns_record).merge(hostnames_attributes: attributes_for_list(:hostname, 3)) }
+      let(:dns_attributes) {
+        attributes_for(:dns_record).merge(hostnames_attributes: attributes_for_list(:hostname, 3))
+      }
       let(:json) { JSON.parse(subject.body, symbolize_names: true) }
       it { is_expected.to have_http_status(:created) }
       it 'responds with entity created' do
@@ -373,6 +375,11 @@ RSpec.describe Api::V1::DnsRecordsController, type: :controller do
     end
     context 'with invalid params' do
       subject { post :create, params: { dns_records: { abc: "tralala" } } }
+      it { is_expected.to have_http_status(:unprocessable_entity) }
+    end
+    context 'with invalid hostname' do
+      let(:dns_attributes) { attributes_for(:dns_record).merge(hostnames_attributes: [{ hostname: 13 }]) }
+      subject { post :create, params: { dns_records: dns_attributes } }
       it { is_expected.to have_http_status(:unprocessable_entity) }
     end
   end
