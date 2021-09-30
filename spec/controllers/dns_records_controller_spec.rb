@@ -341,6 +341,39 @@ RSpec.describe Api::V1::DnsRecordsController, type: :controller do
   end
 
   describe '#create' do
-    # TODO
+    context 'with valid params and without hostnames' do
+      subject { post :create, params: { dns_records: dns_attributes } }
+      let(:dns_attributes) { attributes_for(:dns_record) }
+      let(:json) { JSON.parse(subject.body, symbolize_names: true) }
+      it { is_expected.to have_http_status(:created) }
+      it 'responds with entity created' do
+        expect(json[:ip]).to match(dns_attributes[:ip])
+      end
+      it 'responds with id in json' do
+        expect(json[:id]).to be_a(Integer)
+      end
+      it 'responds with hostnames empty in json' do
+        expect(json[:hostnames].size).to eql(0)
+      end
+    end
+    context 'with valid params and hostnames' do
+      subject { post :create, params: { dns_records: dns_attributes } }
+      let(:dns_attributes) { attributes_for(:dns_record).merge(hostnames_attributes: attributes_for_list(:hostname, 3)) }
+      let(:json) { JSON.parse(subject.body, symbolize_names: true) }
+      it { is_expected.to have_http_status(:created) }
+      it 'responds with entity created' do
+        expect(json[:ip]).to match(dns_attributes[:ip])
+      end
+      it 'responds with id in json' do
+        expect(json[:id]).to be_a(Integer)
+      end
+      it 'responds with hostnames empty in json' do
+        expect(json[:hostnames].size).to eql(3)
+      end
+    end
+    context 'with invalid params' do
+      subject { post :create, params: { dns_records: { abc: "tralala" } } }
+      it { is_expected.to have_http_status(:unprocessable_entity) }
+    end
   end
 end
