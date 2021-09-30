@@ -14,6 +14,8 @@ gem 'puma', '~> 4.1'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'validates_hostname', '~> 1.0'
 
+gem 'kaminari', '~> 1.2', '>= 1.2.1'
+gem 'api-pagination', '~> 4.8', '>= 4.8.2'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
@@ -22,7 +24,9 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'database_cleaner'
   gem 'faker'
+  gem 'factory_bot_rails'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
 end
 
 group :development do
