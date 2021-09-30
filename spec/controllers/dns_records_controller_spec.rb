@@ -347,7 +347,7 @@ RSpec.describe Api::V1::DnsRecordsController, type: :controller do
       let(:json) { JSON.parse(subject.body, symbolize_names: true) }
       it { is_expected.to have_http_status(:created) }
       it 'responds with entity created' do
-        expect(json[:ip]).to match(dns_attributes[:ip])
+        expect(json[:ip]).to eql(dns_attributes[:ip])
       end
       it 'responds with id in json' do
         expect(json[:id]).to be_a(Integer)
@@ -364,7 +364,7 @@ RSpec.describe Api::V1::DnsRecordsController, type: :controller do
       let(:json) { JSON.parse(subject.body, symbolize_names: true) }
       it { is_expected.to have_http_status(:created) }
       it 'responds with entity created' do
-        expect(json[:ip]).to match(dns_attributes[:ip])
+        expect(json[:ip]).to eql(dns_attributes[:ip])
       end
       it 'responds with id in json' do
         expect(json[:id]).to be_a(Integer)
